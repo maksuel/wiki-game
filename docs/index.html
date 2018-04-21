@@ -1,44 +1,155 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-51072092-4"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-51072092-4');
-    </script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-51072092-4"></script> -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>7 cliques para as estrelas</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link href="style.css" rel="stylesheet">
-    <title>Wiki Game</title>
+    <style>
+        html, body { height: 100%; }
+
+        body {
+            background-color: #450273;
+        }
+        #logo {
+            width: 196px;
+        }
+        #info .urls {
+            white-space: nowrap;
+            float: right;
+        }
+        #welcome {
+            max-width: 500px;
+        }
+        #adsense {
+            max-height: 20%;
+        }
+        #nav, #info, #name, #start, #end {
+            display: none;
+        }
+
+        .fadeOutBox {
+            position: relative;
+            width: 60%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        .fadeOutBox:before { 
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50px;
+            margin: 0;
+            background-image: linear-gradient(to right, #f8f9fa, 40%, transparent);
+        }
+    </style>
 </head>
-<body class="container-fluid">  
+<body class="container-fluid p-3 pt-5">
     <header>
-        <figure id="logo">
-            <div class="text-center" style="width:160px;height:90px;background-color:blue;margin:auto;">logo.svg</div>
-            <span>by Maksuel</span>
+        <!-- LOGO -->
+        <figure id="logo" class="mx-auto mb-4">
+            <img class="w-100 d-block" src="https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg" alt="Wikippedia logo">
+            <p class="text-right text-muted"><em>by Maksuel</em></p>
         </figure>
-        <!-- <nav id="nav">
-            <a id="settings" href="#">MENU</a>
-            <a id="back" style="display: none;" href="#">VOLTAR</a></li>
+
+        <!-- NAVBAR FIXED -->
+        <nav id="nav" class="navbar fixed-top pt-3">
+            <button class="btn btn-outline-light" type="button">VOLTAR</button>
         </nav>
-        <div id="info" style="display: inline-flex;">
-            <section>
-                Score: 7
-            </section>
-            <section>
-                pag1 / Pag2 / pag3
-            </section>
-        </div> -->
+
+        <!-- INFOBAR FIXED -->
+        <nav id="info" class="navbar fixed-top navbar-light bg-light pt-0 pb-0">
+            <span class="navbar-text">
+                Score: <span class="score">0</span>
+            </span>
+            <div class="fadeOutBox">
+                <span class="urls navbar-text"></span>
+            </div>
+        </nav>
     </header>
     <main>
-        <blockquote class="blockquote text-center">
-            <p class="mb-0">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, magnam corporis labore, ullam soluta quae blanditiis consectetur explicabo fugit eius officia asperiores non aspernatur porro nisi quis a dolorum voluptas."</p>
-            <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-        </blockquote>
+        <!-- WELCOME SCREEN -->
+        <section id="welcome" class="text-center mx-auto">
+            <!-- COMMENT -->
+            <blockquote class="blockquote mb-5">
+                <p class="mb-0 text-light">"Sete cliques para as estrelas é o melhor game de 2018 segundo os ouvites do Gugacast."</p>
+                <footer class="blockquote-footer">Alguém famoso em <cite title="Guga Cast">GugaCast</cite></footer>
+            </blockquote>
+
+            <!-- BUTTON INIT -->
+            <button class="btn btn-warning mb-5 pl-5 pr-5" type="button"><strong>INICIAR</strong></button>
+            <div class="equalsAdsense mb-3"></div>
+        </section>
+
+        <form class="mx-auto" style="max-width:500px;">
+            <!-- NAME INPUT -->
+            <section id="name">
+                <div class="form-group">
+                    <label for="name" class="mb-4 w-100 h4 text-center text-light">Digite seu nome</label>
+                    <input class="mb-4 form-control form-control-lg" type="text">
+                </div>
+                <div class="w-100 text-center">
+                    <button class="mt-4 btn btn-warning pl-5 pr-5"><strong>PRÓXIMO</strong></button>
+                </div>
+            </section>
+
+            <!-- START INPUT -->
+            <section id="start">
+                <div class="form-group">
+                    <label for="start" class="mb-4 w-100 h4 text-center text-light">Pesquise o ponto de partida</label>
+                    <input class="mb-4 form-control form-control-lg" type="text">
+                </div>
+                <div class="mx-auto text-light" style="width:80%;overflow:scroll;"></div>
+            </section>
+
+            <!-- end INPUT -->
+            <section id="end">
+                <div class="form-group">
+                    <label for="start" class="mb-4 w-100 h4 text-center text-light">Pesquise o ponto de partida</label>
+                    <input class="mb-4 form-control form-control-lg" type="text">
+                </div>
+                <div class="mx-auto text-light" style="width:80%;overflow:scroll;"></div>
+            </section>
+        </form>
+        
+
+        <!-- inputs: 2 -->
+        <section id="inputs" class="mx-auto" style="max-width:500px;">
+            <form>
+                <!-- <section id="2.1(name)">
+                    <div class="form-group">
+                        <label for="name" class="mb-4 w-100 h4 text-center text-light">Digite seu nome</label>
+                        <input id="name" class="mb-4 form-control form-control-lg" type="text">
+                    </div>
+                    <div class="w-100 text-center">
+                        <button class="mt-4 btn btn-warning" type="submit">PRÓXIMO</button>
+                    </div>
+                </section> -->
+                <!-- <section class="2.2(start)">
+                    <div class="form-group">
+                        <label for="start" class="mb-4 w-100 h4 text-center text-light">Pesquise o ponto de partida</label>
+                        <input id="start" class="mb-4 form-control form-control-lg" type="text">
+                    </div>
+                    <div id="start-box" class="mx-auto text-light" style="width:80%;overflow:scroll;"></div>
+                </section> -->
+                <!-- <section class="2.3(end)">
+                    <div class="form-group">
+                        <label for="end" class="mb-4 w-100 h4 text-center text-light">Pesquise o ponto de chegada</label>
+                        <input id="end" class="mb-4 form-control form-control-lg" type="text">
+                    </div>
+                    <div id="end-box" class="w-100 text-light">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem debitis expedita rerum doloremque et corrupti ducimus dolorem, delectus distinctio, repudiandae facere sit ad a? Aperiam ut officiis dolor architecto voluptate!
+                    </div>
+                </section> -->
+            </form>
+        </section>
+
+        <!-- wikipedia: 3 -->
         <!-- <article id="wikipedia" style="display:none;">
             Wikipédia content<br>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cumque eius adipisci id eum, veniam similique modi incidunt iure ab rem voluptatibus quia! Et porro commodi accusantium, impedit temporibus quam.<br>
@@ -51,22 +162,25 @@
         </article> -->
     </main>
     <footer>
-        <div id="buttons">
-            <button>INICIAR</button>
-        </div>
-        <div id="adsense">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- Wiki Game AD -->
+        <!-- ADSENSE -->
+        <section id="adsense" class="fixed-bottom m-3">
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-9973799850345091"
                  data-ad-slot="6870500342"
                  data-ad-format="auto"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
+        </section>
     </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="js/core.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-51072092-4');
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 </body>
 </html>
