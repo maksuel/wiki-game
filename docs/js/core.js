@@ -188,12 +188,13 @@ function startTargetClass(id) {
     let callbackOnce = new callbackOnceWithDelay(config.delayToCall);
     let body = jQuery(id);
     let input = body.find('input');
-    let box = body. find('div.box');
+    let box = body.find('div.box');
     let searched = '';
 
     input.keypress( function(event) {
         if(event.keyCode == 13) {
             event.preventDefault();
+            input.blur();
         }
     });
 
