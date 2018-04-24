@@ -20,7 +20,7 @@
         #logo {
             width: 196px;
         }
-        #nav {
+        #back {
             top: 0;
             left: 0;
         }
@@ -33,12 +33,12 @@
         }
         #start div.box, #target div.box {
             width: 80%;
-            overflow: scroll;
+            overflow: hidden;
         }
         #adsense {
             max-height: 20%;
         }
-        #welcome, #nav, #info, #name, #start, #target, #check, #adsense {
+        #welcome, #back, #info, #name, #start, #target, #check, #adsense {
             display: none;
         }
 
@@ -103,7 +103,7 @@
         </figure>
 
         <!-- NAVBAR FIXED -->
-        <nav id="nav" class="navbar position-absolute pt-3">
+        <nav id="back" class="navbar position-absolute p-2">
             <button class="btn btn-outline-light" type="button">VOLTAR</button>
         </nav>
 
@@ -151,16 +151,28 @@
                     <label for="startInput" class="mb-4 w-100 h4 text-light">Pesquise o ponto de partida</label>
                     <input id="startInput" class="mb-4 form-control form-control-lg" type="text">
                 </div>
-                <div class="box mx-auto text-light text-left"></div>
+                <div class="box text-light text-left mx-auto mb-5">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="#">Example</a>
+                        </li>
+                    </ul>
+                </div>
             </section>
 
             <!-- TARGET INPUT -->
             <section id="target" class="text-center">
                 <div class="form-group">
-                    <label for="endInput" class="mb-4 w-100 h4 text-light">Pesquise o ponto de chegada</label>
-                    <input id="endInput" class="mb-4 form-control form-control-lg" type="text">
+                    <label for="targetInput" class="mb-4 w-100 h4 text-light">Pesquise o ponto de chegada</label>
+                    <input id="targetInput" class="mb-4 form-control form-control-lg" type="text">
                 </div>
-                <div class="box mx-auto text-light text-left"></div>
+                <div class="box text-light text-left mx-auto mb-5">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="#">Example</a>
+                        </li>
+                    </ul>
+                </div>
             </section>
 
             <!-- CHECK INPUTS -->

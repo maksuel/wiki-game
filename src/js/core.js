@@ -1,68 +1,26 @@
-
-function inputBox(inputID, boxID) {
-
-    let callbackOnce = new callbackOnceWithDelay(config.delayToCall);
-    let input = jQuery(inputID);
-    let box = jQuery(boxID);
-    let searched = '';
-
-    input.keyup( function(event) {
-
-        let value = input.val().toLowerCase().replace(/\s+/g,' ').trim();
-
-        callbackOnce.call( function() {
-
-            if(value && value !== searched) {
-
-                jQuery.ajax({
-                    url: `https://pt.wikipedia.org/w/api.php?action=opensearch&search=${value}&limit=10&namespace=0&format=json`,
-                    dataType: 'jsonp'
-                }).done( function(res) {
-
-                    console.log('done');
-
-                    box.empty();
-
-                    $(res[1]).each( function(index, item) {
-                        let p = $('<p>').text(item);
-                        box.append(p);
-                    });
-
-                    searched = value;
-
-                }).fail( function() {
-
-                    console.log(arguments);
-                });
-            }
-        });
-    });
-
-    this.adjustBoxHeight = function() {
-
-        box.height(
-            outerHeight - box.offset().top - 15
-        );
-
-        return this;
-    };
-}
-
-
-
 // GLOBAL
 let config = {
-    delayToCall: 1000
+    locale: 'pt',
+    delayToCall: 1000,
+    limitStartTarget: 10
 };
 let gameData = {
     user: '',
-    startPoint: '',
-    targetPoint: '',
+    startPoint: {
+        name: '',
+        url: '',
+        description: ''
+    },
+    targetPoint: {
+        name: '',
+        url: '',
+        description: ''
+    },
     score: 0,
     way: []
 };
 
-// CLASS
+// HELPERS
 function callbackOnceWithDelay(delay = 0) {
 
     let timeOut;
@@ -79,10 +37,17 @@ function callbackOnceWithDelay(delay = 0) {
     };
 }
 
+// CLASSES
 function genericClass(id) {
 
     let body = jQuery(id);
     let button = body.find('button');
+    let action = 'default';
+
+    button.click( function(event) {
+        event.preventDefault();
+        button.trigger(action);
+    });
 
     this.fadeIn = function(duration, complete) {
         body.fadeIn(duration, complete);
@@ -96,13 +61,19 @@ function genericClass(id) {
 
     this.focus = function() {
         button.focus();
+        return this;
     };
 
-    this.click = function(callback) {
-        button.click( function(event) {
-            event.preventDefault();
-            callback(event);
-        });
+    this.bind = function(clickName, callback) {
+        if(!clickName) {
+            clickName = action;
+        }
+        button.bind(clickName, callback);
+        return this;
+    };
+
+    this.setClick = function(clickName) {
+        action = clickName;
         return this;
     };
 }
@@ -113,13 +84,13 @@ function infoClass(id) {
     let score = body.find('span.score');
     let urls = body.find('span.urls');
 
-    this.show = function() {
-        body.show();
+    this.fadeIn = function(duration, complete) {
+        body.fadeIn(duration, complete);
         return this;
     };
 
-    this.hide = function() {
-        body.hide();
+    this.fadeOut = function(duration, complete) {
+        body.fadeOut(duration, complete);
         return this;
     };
 
@@ -163,6 +134,7 @@ function nameClass(id) {
 
     this.focus = function() {
         input.focus();
+        return this;
     };
 
     this.val = function(value) {
@@ -188,7 +160,9 @@ function startTargetClass(id) {
     let callbackOnce = new callbackOnceWithDelay(config.delayToCall);
     let body = jQuery(id);
     let input = body.find('input');
-    let box = body.find('div.box');
+    let nav = body.find('div.box').find('ul');
+    let li = nav.find('li').clone();
+
     let searched = '';
 
     input.keypress( function(event) {
@@ -212,6 +186,31 @@ function startTargetClass(id) {
         input.focus();
     };
 
+    this.empty = function() {
+        nav.empty();
+        return this;
+    };
+
+    this.addOption = function(name, url, description) {
+        let element = li.clone();
+        if(name && url) {
+            element.find('a').text(name).attr({
+                href: url,
+                'data-description': description
+            });
+        } else {
+            element.html(
+                jQuery('<p>').attr('class', element.find('a').attr('class')).text(name)
+            );
+        }
+        nav.append(element);
+        return this;
+    };
+
+    this.getNav = function() {
+        return nav;
+    };
+
     this.keyup = function(callbackDone, callbackFail) {
 
         input.keyup( function(event) {
@@ -223,11 +222,11 @@ function startTargetClass(id) {
                 if(value && value !== searched) {
     
                     jQuery.ajax({
-                        url: `https://pt.wikipedia.org/w/api.php?action=opensearch&search=${value}&limit=10&namespace=0&format=json`,
+                        url: `https://${config.locale}.wikipedia.org/w/api.php?action=opensearch&search=${value}&limit=${config.limitStartTarget}&format=json`,
                         dataType: 'jsonp'
                     }).done( function(response) {
     
-                        callbackDone(event, value, response, box);
+                        callbackDone(event, value, response);
     
                         searched = value;
     
@@ -239,12 +238,12 @@ function startTargetClass(id) {
     };
 }
 
-
+// GAME
 jQuery(document).ready( function() {
 
     let loading = jQuery('#loading');
     let logo = jQuery('#logo');
-    let nav = new genericClass('#nav');
+    let back = new genericClass('#back');
     let info = new infoClass('#info');
     let welcome = new genericClass('#welcome');
     let name = new nameClass('#name');
@@ -255,16 +254,20 @@ jQuery(document).ready( function() {
     let buttons = jQuery('#buttons');
     let adsense = jQuery('#adsense');
 
+    // PREPARE
+    start.empty();
+    target.empty();
+
     // REMOVE LOAD SCREEN
     loading.fadeOut(undefined, function() {
         welcome.fadeIn(undefined, function() {
-            welcome.focus();
             loading.remove();
+            welcome.focus();
         });
     });
 
     // 1 WELCOME
-    welcome.click( function() {
+    welcome.bind(undefined, function() {
         welcome.fadeOut(undefined, function() {
             name.fadeIn(undefined, function() {
                 name.focus();
@@ -276,8 +279,9 @@ jQuery(document).ready( function() {
     name.click( function() {
         gameData.user = name.val();
         name.fadeOut(undefined, function() {
-            nav.click( function() {
-                nav.fadeOut();
+            back.setClick('nameBack');
+            back.bind('nameBack', function() {
+                back.fadeOut();
                 start.fadeOut(undefined, function() {
                     name.fadeIn(undefined, function() {
                         name.focus();
@@ -291,21 +295,72 @@ jQuery(document).ready( function() {
     });
 
     // 2.2 START
-    start.keyup( function(event, value, response, box) {
+    start.keyup( function(event, value, response) {
 
-        box.empty();
+        let query = response[0];
+        let text = response[1];
+        let description = response[2];
+        let url = response[3];
 
-        $(response[1]).each( function(index, item) {
-            let a = $('<a>').text(item);
-            box.append($('<p>').append(a));
-        });
+        start.empty();
 
-        box.find('a').click( function() {
-            console.log(arguments);
-        });
+        if(response[1].length === 0) {
+            start.addOption('Nada encontrado, tente novamente.');
+        } else {
+            jQuery(response[1]).each( function(index, item) {
+                start.addOption(text[index], url[index], description[index]);
+            });
+
+            start.getNav().find('a').click( function(event) {
+                event.preventDefault();
+                let element = jQuery(event.target);
+                gameData.startPoint.name = element.text();
+                gameData.startPoint.url = element.attr('href');
+                gameData.startPoint.description = element.data('description');
+
+                start.fadeOut(undefined, function() {
+                    back.setClick('startBack');
+                    back.bind('startBack', function() {
+                        target.fadeOut(undefined, function() {
+                            back.setClick('nameBack');
+                            start.fadeIn(undefined, function() {
+                                start.focus();
+                            });
+                        });
+                    });
+                    target.fadeIn(undefined, function() {
+                        target.focus();
+                    });
+                });
+            });
+        }
     });
 
     // 2.3 TARGET
-    target.keyup( function(event, value, response, box) {
+    target.keyup( function(event, value, response) {
+
+        let query = response[0];
+        let text = response[1];
+        let description = response[2];
+        let url = response[3];
+
+        target.empty();
+
+        if(response[1].length === 0) {
+            target.addOption('Nada encontrado, tente novamente.');
+        } else {
+            jQuery(response[1]).each( function(index, item) {
+                target.addOption(text[index], url[index], description[index]);
+            });
+
+            target.getNav().find('a').click( function(event) {
+                event.preventDefault();
+                let element = jQuery(event.target);
+                gameData.targetPoint.name = element.text();
+                gameData.targetPoint.url = element.attr('href');
+                gameData.targetPoint.description = element.data('description');
+
+            });
+        }        
     });
 });
