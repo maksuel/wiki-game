@@ -238,6 +238,46 @@ function startTargetClass(id) {
     };
 }
 
+function checkClass(id) {
+
+    let body = jQuery(id);
+    let button = body.find('button');
+    let startPoint = body.find('div.startPoint');
+    let targetPoint = body.find('div.targetPoint');
+
+    this.fadeIn = function(duration, complete) {
+        body.fadeIn(duration, complete);
+        return this;
+    };
+
+    this.fadeOut = function(duration, complete) {
+        body.fadeOut(duration, complete);
+        return this;
+    };
+
+    this.click = function(callback) {
+        button.click( function(event) {
+            event.preventDefault();
+            callback(event);
+        });
+        return this;
+    };
+
+    this.setStartPoint = function(name, url, description) {
+        startPoint.find('strong.name').text(name);
+        startPoint.find('p.description').text(description);
+        startPoint.find('span.url').text(url);
+        return this;
+    };
+
+    this.setTargetPoint = function(name, url, description) {
+        targetPoint.find('strong.name').text(name);
+        targetPoint.find('p.description').text(description);
+        targetPoint.find('span.url').text(url);
+        return this;
+    };
+}
+
 // GAME
 jQuery(document).ready( function() {
 
@@ -249,7 +289,7 @@ jQuery(document).ready( function() {
     let name = new nameClass('#name');
     let start = new startTargetClass('#start');
     let target = new startTargetClass('#target');
-    let check = jQuery('#check');
+    let check = new checkClass('#check');
     let game = jQuery('#game');
     let buttons = jQuery('#buttons');
     let adsense = jQuery('#adsense');
@@ -318,6 +358,12 @@ jQuery(document).ready( function() {
                 gameData.startPoint.url = element.attr('href');
                 gameData.startPoint.description = element.data('description');
 
+                check.setStartPoint(
+                    gameData.startPoint.name,
+                    gameData.startPoint.url,
+                    gameData.startPoint.description
+                );
+
                 start.fadeOut(undefined, function() {
                     back.setClick('startBack');
                     back.bind('startBack', function() {
@@ -350,7 +396,9 @@ jQuery(document).ready( function() {
             target.addOption('Nada encontrado, tente novamente.');
         } else {
             jQuery(response[1]).each( function(index, item) {
-                target.addOption(text[index], url[index], description[index]);
+                if(gameData.startPoint.url != url[index]) {
+                    target.addOption(text[index], url[index], description[index]);
+                }
             });
 
             target.getNav().find('a').click( function(event) {
@@ -360,6 +408,26 @@ jQuery(document).ready( function() {
                 gameData.targetPoint.url = element.attr('href');
                 gameData.targetPoint.description = element.data('description');
 
+                check.setTargetPoint(
+                    gameData.targetPoint.name,
+                    gameData.targetPoint.url,
+                    gameData.targetPoint.description
+                );
+
+                target.fadeOut(undefined, function() {
+                    back.setClick('targetBack');
+                    back.bind('targetBack', function() {
+                        check.fadeOut(undefined, function() {
+                            back.setClick('startBack');
+                            target.fadeIn(undefined, function() {
+                                target.focus();
+                            });
+                        });
+                    });
+                    check.fadeIn(undefined, function() {
+                        
+                    });
+                });
             });
         }        
     });

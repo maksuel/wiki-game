@@ -5,7 +5,7 @@
 <html lang="pt">
 <head>
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-51072092-4"></script> -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -34,6 +34,9 @@
         #start div.box, #target div.box {
             width: 80%;
             overflow: hidden;
+        }
+        #check div p:last-child {
+            word-break: break-all;
         }
         #adsense {
             max-height: 20%;
@@ -135,11 +138,11 @@
             <button class="btn btn-warning pl-5 pr-5 mb-5" type="button"><strong>INICIAR</strong></button>
         </section>
 
-        <form class="mx-auto">
+        <form class="text-light mx-auto">
             <!-- NAME INPUT -->
             <section id="name" class="text-center">
                 <div class="form-group">
-                    <label for="nameInput" class="mb-4 w-100 h4 text-light">Digite seu nome</label>
+                    <label for="nameInput" class="mb-4 w-100 h4">Digite seu nome</label>
                     <input id="nameInput" class="mb-4 form-control form-control-lg" type="text">
                 </div>
                 <button class="mt-4 btn btn-warning pl-5 pr-5 mb-5" type="button"><strong>PRÓXIMO</strong></button>
@@ -148,10 +151,10 @@
             <!-- START INPUT -->
             <section id="start" class="text-center">
                 <div class="form-group">
-                    <label for="startInput" class="mb-4 w-100 h4 text-light">Pesquise o ponto de partida</label>
+                    <label for="startInput" class="mb-4 w-100 h4">Pesquise o ponto de partida</label>
                     <input id="startInput" class="mb-4 form-control form-control-lg" type="text">
                 </div>
-                <div class="box text-light text-left mx-auto mb-5">
+                <div class="box text-left mx-auto mb-5">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link text-light" href="#">Example</a>
@@ -163,10 +166,10 @@
             <!-- TARGET INPUT -->
             <section id="target" class="text-center">
                 <div class="form-group">
-                    <label for="targetInput" class="mb-4 w-100 h4 text-light">Pesquise o ponto de chegada</label>
+                    <label for="targetInput" class="mb-4 w-100 h4">Pesquise o ponto de chegada</label>
                     <input id="targetInput" class="mb-4 form-control form-control-lg" type="text">
                 </div>
-                <div class="box text-light text-left mx-auto mb-5">
+                <div class="box text-left mx-auto mb-5">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link text-light" href="#">Example</a>
@@ -177,11 +180,18 @@
 
             <!-- CHECK INPUTS -->
             <section id="check" class="text-center">
-                <div class="form-group">
-                    <label for="endInput" class="mb-4 w-100 h4 text-light">Pesquise o ponto de chegada</label>
-                    <input id="endInput" class="mb-4 form-control form-control-lg" type="text">
+                <h1 class="h4 mb-4">Confira os dados</h1>
+                <div class="startPoint text-justify mb-4">
+                    <h2 class="h5">Início: <strong class="name">Example</strong></h2>
+                    <p class="description mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet facilis debitis repudiandae ratione dolorum, omnis at possimus rerum odit maiores iure totam earum quam saepe enim soluta molestiae. Sed, neque.</p>
+                    <p class="text-muted">url: <span class="url">https://www.example.com</span></p>
                 </div>
-                <button class="mt-4 btn btn-warning pl-5 pr-5" type="submit"><strong>COMEÇAR</strong></button>
+                <div class="targetPoint text-justify mb-4">
+                    <h2 class="h5">Objetivo: <strong class="name">Example</strong></h2>
+                    <p class="description mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos facilis eaque maiores voluptatum natus consequatur ipsum aliquam illo omnis cupiditate dolore quidem necessitatibus eum est, nesciunt praesentium nemo asperiores libero.</p>
+                    <p class="text-muted">url: <span class="url">https://www.example.com</span></p>
+                </div>
+                <button class="mt-4 btn btn-warning pl-5 pr-5 mb-5" type="submit"><strong>COMEÇAR</strong></button>
             </section>
         </form>
         
