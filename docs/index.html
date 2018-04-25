@@ -41,7 +41,7 @@
         #adsense {
             max-height: 20%;
         }
-        #welcome, #back, #info, #name, #start, #target, #check, #adsense {
+        #welcome, #back, #info, #name, #start, #target, #check, #wikipedia, .mw-editsection, #adsense {
             display: none;
         }
 
@@ -157,7 +157,8 @@
                 <div class="box text-left mx-auto mb-5">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="#">Example</a>
+                            <a class="nav-link text-light" href="#">Name</a>
+                            <p class="sr-only">Description</p>
                         </li>
                     </ul>
                 </div>
@@ -172,41 +173,67 @@
                 <div class="box text-left mx-auto mb-5">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="#">Example</a>
+                            <a class="nav-link text-light" href="#">Name</a>
+                            <p class="sr-only">Description</p>
                         </li>
                     </ul>
                 </div>
             </section>
 
             <!-- CHECK INPUTS -->
-            <section id="check" class="text-center">
-                <h1 class="h4 mb-4">Confira os dados</h1>
-                <div class="startPoint text-justify mb-4">
-                    <h2 class="h5">Início: <strong class="name">Example</strong></h2>
-                    <p class="description mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet facilis debitis repudiandae ratione dolorum, omnis at possimus rerum odit maiores iure totam earum quam saepe enim soluta molestiae. Sed, neque.</p>
-                    <p class="text-muted">url: <span class="url">https://www.example.com</span></p>
+            <section id="check">
+                <div class="text-center">
+                    <h1 class="h4 mb-4">Confira os dados</h1>
+                    <div class="startPoint text-justify mb-4">
+                        <h2 class="h5">Início: <strong class="name">Example</strong></h2>
+                        <p class="description mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet facilis debitis repudiandae ratione dolorum, omnis at possimus rerum odit maiores iure totam earum quam saepe enim soluta molestiae. Sed, neque.</p>
+                        <p class="text-muted">url: <span class="url">https://www.example.com</span></p>
+                    </div>
+                    <div class="targetPoint text-justify mb-4">
+                        <h2 class="h5">Objetivo: <strong class="name">Example</strong></h2>
+                        <p class="description mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos facilis eaque maiores voluptatum natus consequatur ipsum aliquam illo omnis cupiditate dolore quidem necessitatibus eum est, nesciunt praesentium nemo asperiores libero.</p>
+                        <p class="text-muted">url: <span class="url">https://www.example.com</span></p>
+                    </div>
+                    <button class="mt-4 btn btn-warning pl-5 pr-5 mb-5" type="submit"><strong>COMEÇAR</strong></button>
                 </div>
-                <div class="targetPoint text-justify mb-4">
-                    <h2 class="h5">Objetivo: <strong class="name">Example</strong></h2>
-                    <p class="description mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos facilis eaque maiores voluptatum natus consequatur ipsum aliquam illo omnis cupiditate dolore quidem necessitatibus eum est, nesciunt praesentium nemo asperiores libero.</p>
-                    <p class="text-muted">url: <span class="url">https://www.example.com</span></p>
+
+                <!-- RULES -->
+                <div>
+                    <h2 class="h4">Regras:</h2>
+                    <ul class="mb-5">
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Consectetur adipiscing elit</li>
+                        <li>Integer molestie lorem at massa</li>
+                        <li>Facilisis in pretium nisl aliquet</li>
+                        <li>Nulla volutpat aliquam velit
+                            <ul>
+                                <li>Phasellus iaculis neque</li>
+                                <li>Purus sodales ultricies</li>
+                                <li>Vestibulum laoreet porttitor sem</li>
+                                <li>Ac tristique libero volutpat at</li>
+                            </ul>
+                        </li>
+                        <li>Faucibus porta lacus fringilla vel</li>
+                        <li>Aenean sit amet erat nunc</li>
+                        <li>Eget porttitor lorem</li>
+                    </ul>
                 </div>
-                <button class="mt-4 btn btn-warning pl-5 pr-5 mb-5" type="submit"><strong>COMEÇAR</strong></button>
             </section>
         </form>
         
 
         <!-- wikipedia: 3 -->
-        <!-- <article id="wikipedia" style="display:none;">
-            Wikipédia content<br>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cumque eius adipisci id eum, veniam similique modi incidunt iure ab rem voluptatibus quia! Et porro commodi accusantium, impedit temporibus quam.<br>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cumque eius adipisci id eum, veniam similique modi incidunt iure ab rem voluptatibus quia! Et porro commodi accusantium, impedit temporibus quam.<br>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cumque eius adipisci id eum, veniam similique modi incidunt iure ab rem voluptatibus quia! Et porro commodi accusantium, impedit temporibus quam.<br>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cumque eius adipisci id eum, veniam similique modi incidunt iure ab rem voluptatibus quia! Et porro commodi accusantium, impedit temporibus quam.<br>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cumque eius adipisci id eum, veniam similique modi incidunt iure ab rem voluptatibus quia! Et porro commodi accusantium, impedit temporibus quam.<br>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cumque eius adipisci id eum, veniam similique modi incidunt iure ab rem voluptatibus quia! Et porro commodi accusantium, impedit temporibus quam.<br>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cumque eius adipisci id eum, veniam similique modi incidunt iure ab rem voluptatibus quia! Et porro commodi accusantium, impedit temporibus quam.
-        </article> -->
+        <article id="wikipedia" class="mw-body text-light">
+            <div class="pre-content heading-holder">
+                <h1>Casa</h1>
+                <div class="tagline">estrutura</div>
+            </div>
+            <div class="content">
+                <div class="mw-content-ltr">
+                    <div class="mw-parser-output"></div>
+                </div>
+            </div>
+        </article>
     </main>
     <footer>
         <!-- ADSENSE -->

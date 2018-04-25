@@ -6,16 +6,8 @@ let config = {
 };
 let gameData = {
     user: '',
-    startPoint: {
-        name: '',
-        url: '',
-        description: ''
-    },
-    targetPoint: {
-        name: '',
-        url: '',
-        description: ''
-    },
+    startPoint: {},
+    targetPoint: {},
     score: 0,
     way: []
 };
@@ -36,6 +28,54 @@ function callbackOnceWithDelay(delay = 0) {
         return timeOut;
     };
 }
+
+function getRemote(query) {
+
+    query.format = 'json';
+    let url = `https://${config.locale}.wikipedia.org/w/api.php`;
+    let callbackSuccess;
+    let callbackError;
+
+    let params = [];
+    for (let key in query) {
+        params.push(
+            encodeURIComponent(key) + '=' + encodeURIComponent(query[key])
+        );
+    }
+    params = params.join('&');
+
+    this.success = function(callback) {
+        callbackSuccess = callback;
+        return this;
+    };
+
+    this.error = function(callback) {
+        callbackError = callback;
+        return this;
+    };
+
+    this.exec = function() {
+        if(callbackSuccess) {
+            jQuery.ajax({
+                url: url + '?' + params,
+                dataType: 'jsonp'
+            })
+            .done(callbackSuccess)
+            .fail(callbackError);
+        }
+        return this;
+    };
+}
+
+function getPageName(url) {
+    let page = new String(url).substring(url.lastIndexOf('/') + 1); 
+    if(page.lastIndexOf('?') != -1) {
+        page = page.substring(0, page.lastIndexOf('?'));
+    } else if(page.lastIndexOf('#') != -1) {
+        page = page.substring(0, page.lastIndexOf('#'));
+    }
+    return page;
+};
 
 // CLASSES
 function genericClass(id) {
@@ -194,14 +234,13 @@ function startTargetClass(id) {
     this.addOption = function(name, url, description) {
         let element = li.clone();
         if(name && url) {
-            element.find('a').text(name).attr({
-                href: url,
-                'data-description': description
-            });
+            element.find('a').text(name).attr('href', url);
+            element.find('p').text(description);
         } else {
-            element.html(
-                jQuery('<p>').attr('class', element.find('a').attr('class')).text(name)
-            );
+            element.find('p').addClass(
+                element.find('a').attr('class')
+            ).removeClass('sr-only').text(name);
+            element.find('a').remove();
         }
         nav.append(element);
         return this;
@@ -220,17 +259,18 @@ function startTargetClass(id) {
             callbackOnce.call( function() {
     
                 if(value && value !== searched) {
-    
-                    jQuery.ajax({
-                        url: `https://${config.locale}.wikipedia.org/w/api.php?action=opensearch&search=${value}&limit=${config.limitStartTarget}&format=json`,
-                        dataType: 'jsonp'
-                    }).done( function(response) {
+
+                    new getRemote({
+                        action: 'opensearch',
+                        search: value,
+                        limit: config.limitStartTarget
+                    }).success( function(response) {
     
                         callbackDone(event, value, response);
     
                         searched = value;
     
-                    }).fail(callbackFail);
+                    }).error(callbackFail).exec();
                 }
             });
         });
@@ -267,6 +307,14 @@ function checkClass(id) {
         startPoint.find('strong.name').text(name);
         startPoint.find('p.description').text(description);
         startPoint.find('span.url').text(url);
+
+        // SAVE DATA
+        gameData.startPoint = {
+            name: name,
+            url: url,
+            description: description,
+            page: getPageName(url)
+        };
         return this;
     };
 
@@ -274,6 +322,14 @@ function checkClass(id) {
         targetPoint.find('strong.name').text(name);
         targetPoint.find('p.description').text(description);
         targetPoint.find('span.url').text(url);
+
+        // SAVE DATA
+        gameData.targetPoint = {
+            name: name,
+            url: url,
+            description: description,
+            page: getPageName(url)
+        };
         return this;
     };
 }
@@ -283,16 +339,16 @@ jQuery(document).ready( function() {
 
     let loading = jQuery('#loading');
     let logo = jQuery('#logo');
-    let back = new genericClass('#back');
-    let info = new infoClass('#info');
     let welcome = new genericClass('#welcome');
+    let back = new genericClass('#back');
     let name = new nameClass('#name');
     let start = new startTargetClass('#start');
     let target = new startTargetClass('#target');
     let check = new checkClass('#check');
-    let game = jQuery('#game');
-    let buttons = jQuery('#buttons');
-    let adsense = jQuery('#adsense');
+    let info = new infoClass('#info');
+    let wikipedia = jQuery('#wikipedia');
+    // let buttons = jQuery('#buttons');
+    // let adsense = jQuery('#adsense');
 
     // PREPARE
     start.empty();
@@ -354,14 +410,11 @@ jQuery(document).ready( function() {
             start.getNav().find('a').click( function(event) {
                 event.preventDefault();
                 let element = jQuery(event.target);
-                gameData.startPoint.name = element.text();
-                gameData.startPoint.url = element.attr('href');
-                gameData.startPoint.description = element.data('description');
 
                 check.setStartPoint(
-                    gameData.startPoint.name,
-                    gameData.startPoint.url,
-                    gameData.startPoint.description
+                    element.text(),
+                    element.attr('href'),
+                    element.siblings('p').text()
                 );
 
                 start.fadeOut(undefined, function() {
@@ -404,14 +457,11 @@ jQuery(document).ready( function() {
             target.getNav().find('a').click( function(event) {
                 event.preventDefault();
                 let element = jQuery(event.target);
-                gameData.targetPoint.name = element.text();
-                gameData.targetPoint.url = element.attr('href');
-                gameData.targetPoint.description = element.data('description');
 
                 check.setTargetPoint(
-                    gameData.targetPoint.name,
-                    gameData.targetPoint.url,
-                    gameData.targetPoint.description
+                    element.text(),
+                    element.attr('href'),
+                    element.siblings('p').text()
                 );
 
                 target.fadeOut(undefined, function() {
@@ -424,11 +474,49 @@ jQuery(document).ready( function() {
                             });
                         });
                     });
-                    check.fadeIn(undefined, function() {
-                        
-                    });
+                    check.fadeIn();
                 });
             });
         }        
+    });
+
+    // https://pt.wikipedia.org/w/api.php?action=parse&prop=text&page=pizza&format=json
+    // https://pt.wikipedia.org/wiki/Casa?useformat=mobile
+    // https://pt.wikipedia.org/w/api.php?action=mobileview&prop=text&sections=all&page=Casa&format=json
+
+    // 2.4 CHECK
+    check.click( function() {
+        logo.fadeOut();
+        back.fadeOut();
+        check.fadeOut(undefined, function() {
+            info.fadeIn();
+            wikipedia.fadeIn(undefined, function() {
+                new getRemote({
+                    action: 'mobileview',
+                    prop: 'text',
+                    sections: 'all',
+                    page: gameData.startPoint.page
+                }).success( function(response) {
+                    let sections = response.mobileview.sections;
+                    for(let section of sections) {
+                        let text = section.text;
+                        wikipedia.find('div.mw-parser-output').append(
+                            jQuery('<div>').attr('id', `section-${section.id}`).html(text)
+                        )
+                    }
+                    wikipedia.find('a').each( function(index, item) {
+                        item = jQuery(item);
+                        if(item.attr('href').substring(0,6) == '/wiki/') {
+                            item.addClass('btn btn-outline-warning btn-sm');
+                            console.log('é');
+                        } else {
+                            item.click( function(event) {
+                                event.preventDefault();
+                            });
+                        }
+                    });
+                }).exec();
+            });
+        });
     });
 });
