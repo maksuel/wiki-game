@@ -1,7 +1,7 @@
 // GLOBAL
 let config = {
     locale: 'pt',
-    delayToCall: 1000,
+    delayToCall: 700,
     limitStartTarget: 10
 };
 let gameData = {
@@ -200,6 +200,8 @@ function startTargetClass(id) {
     let callbackOnce = new callbackOnceWithDelay(config.delayToCall);
     let body = jQuery(id);
     let input = body.find('input');
+    let researching = body.find('div.box').find('p.researching').hide();
+    let nothingFound = body.find('div.box').find('p.nothingFound').hide();
     let nav = body.find('div.box').find('ul');
     let li = nav.find('li').clone();
 
@@ -211,6 +213,8 @@ function startTargetClass(id) {
             input.blur();
         }
     });
+
+    nav.empty();
 
     this.fadeIn = function(duration, complete) {
         body.fadeIn(duration, complete);
@@ -226,22 +230,11 @@ function startTargetClass(id) {
         input.focus();
     };
 
-    this.empty = function() {
-        nav.empty();
-        return this;
-    };
-
     this.addOption = function(name, url, description) {
+        nothingFound.hide();
         let element = li.clone();
-        if(name && url) {
-            element.find('a').text(name).attr('href', url);
-            element.find('p').text(description);
-        } else {
-            element.find('p').addClass(
-                element.find('a').attr('class')
-            ).removeClass('sr-only').text(name);
-            element.find('a').remove();
-        }
+        element.find('a').text(name).attr('href', url);
+        element.find('p').text(description);
         nav.append(element);
         return this;
     };
@@ -260,13 +253,23 @@ function startTargetClass(id) {
     
                 if(value && value !== searched) {
 
+                    nothingFound.hide();
+                    researching.show();
+
                     new getRemote({
                         action: 'opensearch',
                         search: value,
                         limit: config.limitStartTarget
                     }).success( function(response) {
+
+                        nav.empty();
+                        researching.hide();
     
-                        callbackDone(event, value, response);
+                        if(response.length === 4 && response[1].length > 0) {
+                            callbackDone(event, value, response);
+                        } else {
+                            nothingFound.show();
+                        }
     
                         searched = value;
     
@@ -350,10 +353,6 @@ jQuery(document).ready( function() {
     // let buttons = jQuery('#buttons');
     // let adsense = jQuery('#adsense');
 
-    // PREPARE
-    start.empty();
-    target.empty();
-
     // REMOVE LOAD SCREEN
     loading.fadeOut(undefined, function() {
         welcome.fadeIn(undefined, function() {
@@ -398,41 +397,35 @@ jQuery(document).ready( function() {
         let description = response[2];
         let url = response[3];
 
-        start.empty();
+        jQuery(url).each( function(index, item) {
+            start.addOption(text[index], item, description[index]);
+        });
 
-        if(response[1].length === 0) {
-            start.addOption('Nada encontrado, tente novamente.');
-        } else {
-            jQuery(response[1]).each( function(index, item) {
-                start.addOption(text[index], url[index], description[index]);
-            });
+        start.getNav().find('a').click( function(event) {
+            event.preventDefault();
+            let element = jQuery(event.target);
 
-            start.getNav().find('a').click( function(event) {
-                event.preventDefault();
-                let element = jQuery(event.target);
+            check.setStartPoint(
+                element.text(),
+                element.attr('href'),
+                element.siblings('p').text()
+            );
 
-                check.setStartPoint(
-                    element.text(),
-                    element.attr('href'),
-                    element.siblings('p').text()
-                );
-
-                start.fadeOut(undefined, function() {
-                    back.setClick('startBack');
-                    back.bind('startBack', function() {
-                        target.fadeOut(undefined, function() {
-                            back.setClick('nameBack');
-                            start.fadeIn(undefined, function() {
-                                start.focus();
-                            });
+            start.fadeOut(undefined, function() {
+                back.setClick('startBack');
+                back.bind('startBack', function() {
+                    target.fadeOut(undefined, function() {
+                        back.setClick('nameBack');
+                        start.fadeIn(undefined, function() {
+                            start.focus();
                         });
                     });
-                    target.fadeIn(undefined, function() {
-                        target.focus();
-                    });
+                });
+                target.fadeIn(undefined, function() {
+                    target.focus();
                 });
             });
-        }
+        });
     });
 
     // 2.3 TARGET
@@ -443,41 +436,35 @@ jQuery(document).ready( function() {
         let description = response[2];
         let url = response[3];
 
-        target.empty();
+        jQuery(url).each( function(index, item) {
+            if(gameData.startPoint.url != item) {
+                target.addOption(text[index], item, description[index]);
+            }
+        });
 
-        if(response[1].length === 0) {
-            target.addOption('Nada encontrado, tente novamente.');
-        } else {
-            jQuery(response[1]).each( function(index, item) {
-                if(gameData.startPoint.url != url[index]) {
-                    target.addOption(text[index], url[index], description[index]);
-                }
-            });
+        target.getNav().find('a').click( function(event) {
+            event.preventDefault();
+            let element = jQuery(event.target);
 
-            target.getNav().find('a').click( function(event) {
-                event.preventDefault();
-                let element = jQuery(event.target);
+            check.setTargetPoint(
+                element.text(),
+                element.attr('href'),
+                element.siblings('p').text()
+            );
 
-                check.setTargetPoint(
-                    element.text(),
-                    element.attr('href'),
-                    element.siblings('p').text()
-                );
-
-                target.fadeOut(undefined, function() {
-                    back.setClick('targetBack');
-                    back.bind('targetBack', function() {
-                        check.fadeOut(undefined, function() {
-                            back.setClick('startBack');
-                            target.fadeIn(undefined, function() {
-                                target.focus();
-                            });
+            target.fadeOut(undefined, function() {
+                back.setClick('targetBack');
+                back.bind('targetBack', function() {
+                    check.fadeOut(undefined, function() {
+                        back.setClick('startBack');
+                        target.fadeIn(undefined, function() {
+                            target.focus();
                         });
                     });
-                    check.fadeIn();
                 });
+                check.fadeIn();
             });
-        }        
+        });  
     });
 
     // https://pt.wikipedia.org/w/api.php?action=parse&prop=text&page=pizza&format=json

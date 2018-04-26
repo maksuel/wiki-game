@@ -79,6 +79,11 @@
             100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
         }
 
+        .researching span {
+            width: 20px;
+            height: 20px;
+        }
+
         .fadeOutBox {
             position: relative;
             width: 60%;
@@ -155,6 +160,8 @@
                     <input id="startInput" class="mb-4 form-control form-control-lg" type="text">
                 </div>
                 <div class="box text-left mx-auto mb-5">
+                    <p class="researching"><span class="loader float-left mr-2"></span>Pesquisando...</p>
+                    <p class="nothingFound">Nada encontrado, pesquise outra palavra.</p>
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link text-light" href="#">Name</a>
@@ -171,6 +178,8 @@
                     <input id="targetInput" class="mb-4 form-control form-control-lg" type="text">
                 </div>
                 <div class="box text-left mx-auto mb-5">
+                    <p class="researching"><span class="loader float-left mr-2"></span>Pesquisando...</p>
+                    <p class="nothingFound">Nada encontrado, pesquise outra palavra.</p>
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link text-light" href="#">Name</a>
