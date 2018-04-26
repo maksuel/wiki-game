@@ -306,14 +306,14 @@ function checkClass(id) {
         return this;
     };
 
-    this.setStartPoint = function(name, url, description) {
-        startPoint.find('strong.name').text(name);
+    this.setStartPoint = function(heading, url, description) {
+        startPoint.find('strong.heading').text(heading);
         startPoint.find('p.description').text(description);
         startPoint.find('span.url').text(url);
 
         // SAVE DATA
         gameData.startPoint = {
-            name: name,
+            heading: heading,
             url: url,
             description: description,
             page: getPageName(url)
@@ -321,14 +321,14 @@ function checkClass(id) {
         return this;
     };
 
-    this.setTargetPoint = function(name, url, description) {
-        targetPoint.find('strong.name').text(name);
+    this.setTargetPoint = function(heading, url, description) {
+        targetPoint.find('strong.heading').text(heading);
         targetPoint.find('p.description').text(description);
         targetPoint.find('span.url').text(url);
 
         // SAVE DATA
         gameData.targetPoint = {
-            name: name,
+            heading: heading,
             url: url,
             description: description,
             page: getPageName(url)
@@ -393,12 +393,12 @@ jQuery(document).ready( function() {
     start.keyup( function(event, value, response) {
 
         let query = response[0];
-        let text = response[1];
+        let heading = response[1];
         let description = response[2];
         let url = response[3];
 
         jQuery(url).each( function(index, item) {
-            start.addOption(text[index], item, description[index]);
+            start.addOption(heading[index], item, description[index]);
         });
 
         start.getNav().find('a').click( function(event) {
@@ -432,13 +432,13 @@ jQuery(document).ready( function() {
     target.keyup( function(event, value, response) {
 
         let query = response[0];
-        let text = response[1];
+        let heading = response[1];
         let description = response[2];
         let url = response[3];
 
         jQuery(url).each( function(index, item) {
             if(gameData.startPoint.url != item) {
-                target.addOption(text[index], item, description[index]);
+                target.addOption(heading[index], item, description[index]);
             }
         });
 
