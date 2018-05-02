@@ -482,13 +482,14 @@ jQuery(document).ready( function() {
         check.fadeOut(undefined, function() {
             info.fadeIn();
             wikipedia.fadeIn(undefined, function() {
-                new getRemote({ // action=parse&prop=displaytitle|headhtml|text&page=pizza
+                new getRemote({
                     action: 'parse',
-                    prop: 'displaytitle|text',
-                    page: gameData.startPoint.page
+                    prop: 'displaytitle|text|modules|jsconfigvars',
+                    page: gameData.startPoint.page,
+                    redirects: true
                 }).success( function(response) {
            
-                    // console.log(response);
+                    console.log(response);
 
                     wikipedia.find('h1').text(response.parse.displaytitle);
                     wikipedia.append(response.parse.text['*']);
@@ -496,18 +497,19 @@ jQuery(document).ready( function() {
                     wikipedia.find('a').each( function(index, item) {
                         item = jQuery(item);
 
-                        item.addClass('btn border-0 p-0');
-
                         if(item.attr('href').substring(0,6) == '/wiki/') {
                             console.log(item.attr('href'));
                             item.click( function(event) {
                                 event.preventDefault();
-                                console.log(this);
+                                console.log(this.href);
                             });
                         } else if(item.attr('href').substring(0,1) == '#') {
-                            item.addClass('btn-outline-success btn-sm');
+                            item.addClass('text-success');
                         } else {
-                            item.addClass('btn-outline-dark disabled');
+                            item.addClass('text-dark').css({
+                                'pointer-events': 'none',
+                                opacity: .65
+                            });
                         }
                     });
                 }).exec();
