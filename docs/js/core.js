@@ -2,13 +2,16 @@
 let config = {
     locale: 'pt',
     delayToCall: 700,
-    limitStartTarget: 10
+    limitStartTarget: 10,
+    fadeInDuration: 400,
+    fadeOutDuration: 400
 };
 let gameData = {
     user: '',
     startPoint: {},
     targetPoint: {},
     score: 0,
+    duration: 0,
     way: []
 };
 
@@ -89,13 +92,13 @@ function genericClass(id) {
         button.trigger(action);
     });
 
-    this.fadeIn = function(duration, complete) {
-        body.fadeIn(duration, complete);
+    this.fadeIn = function(callback) {
+        body.fadeIn(config.fadeInDuration, callback);
         return this;
     };
 
-    this.fadeOut = function(duration, complete) {
-        body.fadeOut(duration, complete);
+    this.fadeOut = function(callback) {
+        body.fadeOut(config.fadeOutDuration, callback);
         return this;
     };
 
@@ -117,7 +120,8 @@ function genericClass(id) {
         return this;
     };
 }
-
+// TODO: adjust duration fadeIn/fadeOut to global config like genericClass
+// TODO: create class for all elements
 function infoClass(id) {
 
     let body = jQuery(id);
@@ -355,7 +359,7 @@ jQuery(document).ready( function() {
 
     // REMOVE LOAD SCREEN
     loading.fadeOut(undefined, function() {
-        welcome.fadeIn(undefined, function() {
+        welcome.fadeIn( function() {
             loading.remove();
             welcome.focus();
         });
@@ -363,7 +367,7 @@ jQuery(document).ready( function() {
 
     // 1 WELCOME
     welcome.bind(undefined, function() {
-        welcome.fadeOut(undefined, function() {
+        welcome.fadeOut( function() {
             name.fadeIn(undefined, function() {
                 name.focus();
             });
@@ -478,28 +482,32 @@ jQuery(document).ready( function() {
         check.fadeOut(undefined, function() {
             info.fadeIn();
             wikipedia.fadeIn(undefined, function() {
-                new getRemote({
-                    action: 'mobileview',
-                    prop: 'text',
-                    sections: 'all',
+                new getRemote({ // action=parse&prop=displaytitle|headhtml|text&page=pizza
+                    action: 'parse',
+                    prop: 'displaytitle|text',
                     page: gameData.startPoint.page
                 }).success( function(response) {
-                    let sections = response.mobileview.sections;
-                    for(let section of sections) {
-                        let text = section.text;
-                        wikipedia.find('div.mw-parser-output').append(
-                            jQuery('<div>').attr('id', `section-${section.id}`).html(text)
-                        )
-                    }
+           
+                    // console.log(response);
+
+                    wikipedia.find('h1').text(response.parse.displaytitle);
+                    wikipedia.append(response.parse.text['*']);
+
                     wikipedia.find('a').each( function(index, item) {
                         item = jQuery(item);
+
+                        item.addClass('btn border-0 p-0');
+
                         if(item.attr('href').substring(0,6) == '/wiki/') {
-                            item.addClass('btn btn-outline-warning btn-sm');
-                            console.log('é');
-                        } else {
+                            console.log(item.attr('href'));
                             item.click( function(event) {
                                 event.preventDefault();
+                                console.log(this);
                             });
+                        } else if(item.attr('href').substring(0,1) == '#') {
+                            item.addClass('btn-outline-success btn-sm');
+                        } else {
+                            item.addClass('btn-outline-dark disabled');
                         }
                     });
                 }).exec();
