@@ -1,0 +1,88 @@
+html, body { height: 100%; }
+
+body {
+    background-color: #450273;
+}
+#logo {
+    width: 196px;
+}
+#back {
+    top: 0;
+    left: 0;
+}
+#info span.urls {
+    white-space: nowrap;
+    float: right;
+}
+#welcome, form {
+    max-width: 500px;
+}
+#start div.box, #target div.box {
+    width: 80%;
+    overflow: hidden;
+}
+#check div p:last-child {
+    word-break: break-all;
+}
+#adsense {
+    max-height: 20%;
+}
+#welcome, #back, #info, #name, #start, #target, #check, #wikipedia, .mw-editsection, #adsense {
+    display: none;
+}
+
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f8f9fa;
+    border-radius: 50%;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    animation: loader-animation 575ms infinite linear;
+    -o-animation: loader-animation 575ms infinite linear;
+    -ms-animation: loader-animation 575ms infinite linear;
+    -webkit-animation: loader-animation 575ms infinite linear;
+    -moz-animation: loader-animation 575ms infinite linear;
+}
+
+@keyframes loader-animation {
+    100%{ transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-o-keyframes loader-animation {
+    100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-ms-keyframes loader-animation {
+    100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-webkit-keyframes loader-animation {
+    100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-moz-keyframes loader-animation {
+    100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+.researching span {
+    width: 20px;
+    height: 20px;
+}
+
+.fadeOutBox {
+    position: relative;
+    width: 60%;
+    max-width: 600px;
+    overflow: hidden;
+}
+.fadeOutBox:before { 
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50px;
+    margin: 0;
+    background-image: linear-gradient(to right, #f8f9fa, 40%, transparent);
+}
