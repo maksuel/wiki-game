@@ -12,7 +12,6 @@ body {
 }
 #info span.urls {
     white-space: nowrap;
-    float: right;
 }
 #welcome, form {
     max-width: 500px;
@@ -24,11 +23,22 @@ body {
 #check div p:last-child {
     word-break: break-all;
 }
+#wikipedia {
+    left: 0;
+    overflow-x: scroll;
+}
+#minerva {
+    max-width: 1000px;
+}
 #adsense {
     max-height: 20%;
 }
-#welcome, #back, #info, #name, #start, #target, #check, #wikipedia, .mw-editsection, #adsense {
+#welcome, #back, #info, #name, #start, #target, #check, #wikipedia, #bug, #adsense {
     display: none;
+}
+
+.mw-editsection {
+    display: none !important;
 }
 
 .loader {
@@ -72,7 +82,7 @@ body {
 
 .fadeOutBox {
     position: relative;
-    width: 60%;
+    width: 65%;
     max-width: 600px;
     overflow: hidden;
 }
@@ -84,5 +94,24 @@ body {
     height: 100%;
     width: 50px;
     margin: 0;
-    background-image: linear-gradient(to right, #f8f9fa, 40%, transparent);
+    /* REFERENCE: http://www.colorzilla.com/gradient-editor/ */
+    background: none;
+    background:    -moz-linear-gradient(left, rgba(248,249,250,1) 0%, rgba(255,255,255,0) 100%);
+    background:        -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(248,249,250,1)), color-stop(100%,rgba(255,255,255,0)));
+    background: -webkit-linear-gradient(left, rgba(248,249,250,1) 0%,rgba(255,255,255,0) 100%);
+    background:      -o-linear-gradient(left, rgba(248,249,250,1) 0%,rgba(255,255,255,0) 100%);
+    background:     -ms-linear-gradient(left, rgba(248,249,250,1) 0%,rgba(255,255,255,0) 100%);
+    background:         linear-gradient(to right, rgba(248,249,250,1) 0%,rgba(255,255,255,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f9fa', endColorstr='#00ffffff',GradientType=1 );
+    /* background-image: linear-gradient(to right, #f8f9fa, 40%, transparent); */
+}
+
+.btn-bug {
+    height: 30px;
+    width: 30px;
+    transform: rotate(40deg);
+}
+
+.title-bug {
+    width: 16px;
 }

@@ -12,6 +12,7 @@ function name(id) {
     });
 
     this.fadeIn = function(callback) {
+        returnToTop('/name');
         body.fadeIn(config.fadeInDuration, callback);
         return this;
     };

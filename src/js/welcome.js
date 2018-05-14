@@ -4,6 +4,7 @@ function welcome(id) {
     let button = body.find('button');
 
     this.fadeIn = function(callback) {
+        returnToTop('/welcome');
         body.fadeIn(config.fadeInDuration, callback);
         return this;
     };

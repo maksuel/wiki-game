@@ -6,6 +6,7 @@ function check(id) {
     let targetPoint = body.find('div.targetPoint');
 
     this.fadeIn = function(callback) {
+        returnToTop('/check');
         body.fadeIn(config.fadeInDuration, callback);
         return this;
     };

@@ -1,4 +1,4 @@
-function startTarget(id) {
+function startTarget(id,pageName) {
 
     let callbackOnce = new callbackOnceWithDelay(config.delayToCall);
     let body = jQuery(id);
@@ -20,6 +20,7 @@ function startTarget(id) {
     nav.empty();
 
     this.fadeIn = function(callback) {
+        returnToTop(`/${pageName}`);
         body.fadeIn(config.fadeInDuration, callback);
         return this;
     };
@@ -41,6 +42,12 @@ function startTarget(id) {
             if(nothingFound.is(":visible")) {
                 nothingFound.hide();
             }
+
+            window.scrollTo(0,
+                parseInt(
+                    input.offset().top - parseInt(input.css('marginBottom'))
+                )
+            );
 
             let option = li.clone();
             option.find('a').text(result.heading).attr('href', result.url).click( function(event) {

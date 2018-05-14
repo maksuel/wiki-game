@@ -1,3 +1,8 @@
+function returnToTop(pageName = '') {
+    window.scrollTo(0,0);
+    window.location.hash = pageName;
+}
+
 function callbackOnceWithDelay(delay = 0) {
 
     let timeOut;
@@ -63,4 +68,33 @@ function getPageName(url) {
     }
     
     return decodeURIComponent(page);
+}
+
+function getWikipediaUrl(sub) {
+    return `https://${config.locale}.wikipedia.org${decodeURIComponent(sub)}`;
+}
+
+function sendGameData() {
+    let startTime = gameData.date.getTime();
+    let docname = `${startTime}_${ID}`;
+    gameData.duration = Date.now() - startTime;
+    firestore.collection(DB).doc(docname).set(gameData)
+    .then( function() {
+        console.log('score:', gameData.score);
+    }).catch( function() {
+        console.log(docname);
+    });
+    // console.log(gameData);
+}
+
+function reportBug() {
+    console.log({
+        time: new Date(),
+        id: ID,
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        height: window.innerHeight,
+        width: window.innerWidth,
+        gameData: gameData
+    });
 }

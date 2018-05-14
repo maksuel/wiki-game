@@ -1,15 +1,23 @@
-jQuery(document).ready( function() {
+jQuery(document).ready( function($) {
+
+    $('#bug button[data-toggle="popover"]').first().popover({
+        trigger: 'focus',
+        html: true,
+        placement: 'top',
+        container: 'body',
+        title: $('#bug').find('.bug-title').remove().html(),
+        content: $('#bug').find('.bug-content').remove().html()
+    });
 
     let pl = new preloading('#preloading'),
         lg = new logo('#logo'),
         bk = new back('#back'),
         wl = new welcome('#welcome'),
         nm = new name('#name'),
-        st = new startTarget('#start'),
-        tg = new startTarget('#target'),
+        st = new startTarget('#start', 'start'),
+        tg = new startTarget('#target', 'target'),
         ck = new check('#check'),
-        nf = new info('#info')
-        wp = new wikipedia('#wikipedia');
+        wp = new wikipedia('#info', '#wikipedia');
 
     // REMOVE LOAD SCREEN
     pl.fadeOut( function() {
@@ -101,21 +109,7 @@ jQuery(document).ready( function() {
         bk.fadeOut();
         ck.fadeOut( function() {
             // GAME
-            nf.fadeIn();
-            wp.fadeIn( function() {
-
-                new getRemote({
-                    action: 'parse',
-                    prop: 'displaytitle|text|modules|jsconfigvars',
-                    page: gameData.startPoint.page,
-                    redirects: true
-                }).success( function(response) {
- 
-                    wp.setTitle(response.parse.displaytitle)
-                    .setArticle(response.parse.text['*']);
-
-                }).exec();
-            });
+            wp.getContent(gameData.startPoint.page).fadeIn();
         });
     });
 });
