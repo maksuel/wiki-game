@@ -6,4 +6,4 @@ function logo(id) {
         body.fadeOut(config.fadeOutDuration, callback);
         return this;
     };
-}
+} 
